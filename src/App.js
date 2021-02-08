@@ -29,7 +29,6 @@ class App extends React.Component {
           <br/>
           <div className="buttons">
             <Button className="newEmp" variant="outlined" color="primary" onClick={() => this.setState({show:'create'})}>Nuevo empleado</Button>
-            <Button>cerrar</Button>
             </div>
             </Paper>
           <Paper elevation={3} className="card info">
