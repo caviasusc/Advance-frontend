@@ -1,0 +1,23 @@
+.subButton{
+    color: hsl(231, 40%, 60%);
+    font-size: 14px;
+    background-color: white;
+    border: hsl(231, 75%, 75%) 1px solid;
+    border-radius: 3px;
+    padding: 5px 15px;
+    margin:20px;
+    transition: 0.4s;
+
+}
+.subButton:hover{
+  border: hsl(231, 55%, 45%) 1px solid;
+  background-color: hsl(231, 5%, 98%);
+  transition: 0.4s;
+}
+.subButton:active{
+    background-color: hsl(231, 70%, 85%);
+}
+.error{
+  font-size: 11px;
+  color: red;
+}
