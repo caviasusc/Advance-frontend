@@ -1,25 +1,46 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useEffect, useState } from 'react';
+import List from './components/list';
+import Employee from './components/employee'
+import { Button, Paper } from '@material-ui/core';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
+
+class App extends React.Component {
+  state = {
+    show: null,
+    id:0,
+  }
+
+  onEdit(){
+    this.setState({show:'update'})
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <header className="App-header">
+          <p>
+            Mi prueba
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+          <a>Acerca de</a>
+        </header>
+        <main>
+          <Paper elevation={3} className="card list">
+          <List edit={(id) => this.setState({ show: 'update', id:id })}/>
+          <br/>
+          <div className="buttons">
+            <Button className="newEmp" variant="outlined" color="primary" onClick={() => this.setState({show:'create'})}>Nuevo empleado</Button>
+            <Button>cerrar</Button>
+            </div>
+            </Paper>
+          <Paper elevation={3} className="card info">
+          <Employee show={this.state.show} id={this.state.id}/>
+        </Paper>
+        </main>
+      </div >
+    );
+  }
 }
+
 
 export default App;

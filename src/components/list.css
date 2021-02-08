@@ -1,0 +1,8 @@
+td{
+    text-align: left;
+    padding: 5px 0;
+}
+th{
+    background: hsl(257, 45%, 75%);
+    padding: 10px;
+}
