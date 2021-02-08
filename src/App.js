@@ -22,7 +22,6 @@ class App extends React.Component {
           <p>
             Mi prueba
         </p>
-          <a>Acerca de</a>
         </header>
         <main>
           <Paper elevation={3} className="card list">

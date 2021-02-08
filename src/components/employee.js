@@ -29,7 +29,7 @@ function Employee(props) {
             )
         } else if (show == 'update') {
             return (
-                <UpdateEmployee />
+                <UpdateEmployee id={id}/>
             )
         }
     } else {

@@ -29,6 +29,15 @@ function List(props) {
   }, []);
   const delEmp = async(id)=>{
     console.log('eliminar empleados con id', id)
+    var requestOptions = {
+      method: 'DELETE',
+      redirect: 'follow'
+    };
+
+    await fetch(`https://my-test-cv.herokuapp.com/employee/${id}`, requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
   }
  
   const classes = useStyles();

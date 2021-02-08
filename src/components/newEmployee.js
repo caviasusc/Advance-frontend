@@ -34,155 +34,173 @@ function NewEmployee() {
 
     const onSubmit = async (data) => {
 
-        let info = values
-        info.document_type = docType
-        info.gender = gender
+        let info = {
+            "first_name": values.first_name,
+            "last_name": values.last_name,
+            "gender": gender,
+            "email": values.email,
+            "phone_number": values.phone_number,
+            "address": values.address,
+            "document_type": docType,
+            "document_number": values.document_number
+        }
 
         var requestOptions = {
             method: 'POST',
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "Content-Type": "application/json",
+            },
             body: info,
             redirect: 'follow'
-        };
-
-        await fetch("https://my-test-cv.herokuapp.com/employee/", requestOptions)
-            .then(response => response.text())
-            .then(result => console.log(result))
-            .catch(error => console.log('error', error));
-        reset();
     };
+        console.log(info)
+    await fetch("http://localhost:8000/employee/", requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+    reset();
+};
 
-    return (
-        <div>
-            <h2>Nuevo empleado</h2>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <TextField
-                    label="Nombre"
-                    id="firstname"
-                    name="firstname"
-                    value={values.firstname}
-                    onChange={event => setValue('firstname', event.target.value, true)}
+return (
+    <div>
+        <h2>Nuevo empleado</h2>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <TextField
+                label="Nombre"
+                id="firstname"
+                name="firstname"
+                value={values.firstname}
+                onChange={event => setValue('firstname', event.target.value, true)}
+                required
+                inputRef={
+                    register({
+                        required: { value: true, message: 'Ingrese un nombre' },
+                    })
+                }
+            />
+            <br />
+            <TextField
+                label="Apellido"
+                id="lastname"
+                name="lastname"
+                required
+                onChange={event => setValue('lastname', event.target.value, true)}
+                inputRef={
+                    register({
+                        required: { value: true, message: 'Ingrese un nombre' },
+                    })
+                }
+            />
+            <br />
+            <FormControl component="fieldset">
+                <FormLabel component="legend">Género</FormLabel>
+                <RadioGroup
+                    aria-label="gender"
+                    name="gender"
+                    value={values.gender}
+                    onChange={handleChange}
                     required
                     inputRef={
                         register({
                             required: { value: true, message: 'Ingrese un nombre' },
                         })
                     }
-                />
-                <br />
-                <TextField
-                    label="Apellido"
-                    id="lastname"
-                    name="lastname"
-                    required
-                    onChange={event => setValue('lastname', event.target.value, true)}
-                    inputRef={
-                        register({
-                            required: { value: true, message: 'Ingrese un nombre' },
-                        })
-                    }
-                />
-                <br />
-                <FormControl component="fieldset">
-                    <FormLabel component="legend">Género</FormLabel>
-                    <RadioGroup
-                        aria-label="gender"
-                        name="gender"
-                        value={values.gender}
-                        onChange={handleChange}
-                        required
-                        inputRef={
-                            register({
-                                required: { value: true, message: 'Ingrese un nombre' },
-                            })
+                >
+                    <FormControlLabel value="Mujer" control={<Radio />} label="Mujer" />
+                    <FormControlLabel value="Hombre" control={<Radio />} label="Hombre" />
+                    <FormControlLabel value="Otro" control={<Radio />} label="Otro" />
+                </RadioGroup>
+            </FormControl>
+            <br />
+            <TextField
+                label="Email"
+                placeholder="Email"
+                id="email-TF"
+                name="email"
+                onChange={event => setValue('email', event.target.value, true)}
+                required
+                inputRef={
+                    register({
+                        required: { value: true, message: 'Ingrese un nombre' },
+                        pattern: {
+                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                            message: "Correo invalido!"
                         }
-                    >
-                        <FormControlLabel value="Mujer" control={<Radio />} label="Mujer" />
-                        <FormControlLabel value="Hombre" control={<Radio />} label="Hombre" />
-                        <FormControlLabel value="Otro" control={<Radio />} label="Otro" />
-                    </RadioGroup>
-                </FormControl>
-                <br />
-                <TextField
-                    label="Email"
-                    placeholder="Email"
-                    id="email-TF"
-                    name="email"
-                    onChange={event => setValue('email', event.target.value, true)}
-                    required
-                    inputRef={
-                        register({
-                            required: { value: true, message: 'Ingrese un nombre' },
-                            pattern: {
-                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                message: "Correo invalido!"
-                            }
-                        })
-                    }
-                /> <br /><span className="error">{errors?.email?.message}</span>
-                <br />
-                <TextField
-                    label="Dirección"
-                    placeholder="Dirección"
-                    name="address"
-                    id="address"
-                    onChange={event => setValue('address', event.target.value, true)}
-                    inputRef={
-                        register({
-                            required: { value: true, message: 'Ingrese un nombre' },
-                        })
-                    }
-                /><br />
-                <TextField
-                    label="Teléfono"
-                    placeholder="Teléfono"
-                    id="phone-TF"
-                    name="phone_number"
-                    required
-                    onChange={event => setValue('phone_number', event.target.value, true)}
-                    inputRef={
-                        register({
-                            required: { value: true, message: 'Ingrese un nombre' },
-                        })
-                    } />
-                <br />
-               <FormControl component="fieldset">
-                    <FormLabel component="legend">Tipo de documento</FormLabel>
-                    <RadioGroup
-                        aria-label="docType"
-                        name="docType"
-                        value={values.docType}
-                        onChange={handleChangeDoc}
-                        required
-                        inputRef={
-                            register({
-                                required: { value: true, message: 'Ingrese un nombre' },
-                            })
+                    })
+                }
+            /> <br /><span className="error">{errors?.email?.message}</span>
+            <br />
+            <TextField
+                label="Dirección"
+                placeholder="Dirección"
+                name="address"
+                id="address"
+                onChange={event => setValue('address', event.target.value, true)}
+                inputRef={
+                    register({
+                        required: { value: false, message: 'Ingrese un nombre' },
+                    })
+                }
+            /><br />
+            <TextField
+                label="Teléfono"
+                placeholder="Teléfono"
+                id="phone-TF"
+                name="phone_number"
+                required
+                onChange={event => setValue('phone_number', event.target.value, true)}
+                inputRef={
+                    register({
+                        required: { value: true, message: 'Ingrese un nombre' },
+                        pattern: {
+                            value: /^[0-9]/,
+                            message: "Ingrese un número"
                         }
-                    >
-                        <FormControlLabel value="Cedula" control={<Radio />} label="Cedula" />
-                        <FormControlLabel value="Cedula de etranjeria" control={<Radio />} label="Cedula de etranjeria" />
-                        <FormControlLabel value="Otro" control={<Radio />} label="Otro" />
-                    </RadioGroup>
-                </FormControl><br />
-                <TextField
-                    label="Documento"
-                    placeholder="Documento"
-                    id="document_number"
-                    name="document_number"
+                    })
+                }
+            /> <br /><span className="error">{errors?.phone_number?.message}</span>
+            <br />
+            <FormControl component="fieldset">
+                <FormLabel component="legend">Tipo de documento</FormLabel>
+                <RadioGroup
+                    aria-label="docType"
+                    name="docType"
+                    value={values.docType}
+                    onChange={handleChangeDoc}
                     required
-                    onChange={event => setValue('document_number', event.target.value, true)}
                     inputRef={
                         register({
                             required: { value: true, message: 'Ingrese un nombre' },
                         })
                     }
-                />
-                <br />
-                <input className="subButton" type="submit"></input>
-            </form>
-        </div >
-    );
+                >
+                    <FormControlLabel value="Cedula" control={<Radio />} label="Cedula" />
+                    <FormControlLabel value="Cedula de etranjeria" control={<Radio />} label="Cedula de etranjeria" />
+                    <FormControlLabel value="Otro" control={<Radio />} label="Otro" />
+                </RadioGroup>
+            </FormControl><br />
+            <TextField
+                label="Documento"
+                placeholder="Documento"
+                id="document_number"
+                name="document_number"
+                required
+                onChange={event => setValue('document_number', event.target.value, true)}
+                inputRef={
+                    register({
+                        required: { value: true, message: 'Ingrese un nombre' },
+                        pattern: {
+                            value: /^[0-9]/,
+                            message: "Ingrese un número"
+                        }
+                    })
+                }
+            /> <br /><span className="error">{errors?.document_number?.message}</span>
+            <br />
+            <input className="subButton" type="submit"></input>
+        </form>
+    </div >
+);
 
 }
 
