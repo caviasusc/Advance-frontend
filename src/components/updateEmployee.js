@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form'
-import { Button, TextField, InputLabel, Select, MenuItem, FormControl } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { TextField, FormControl } from '@material-ui/core';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -31,11 +30,11 @@ function UpdateEmployee(props) {
             const pre_info = {
                 "first_name": first_name,
                 "last_name": last_name,
-                "gender": gender,
+                "gender": gender==employee.gender ? null : gender,
                 "email": email,
                 "phone_number": phone_number,
                 "address": address,
-                "document_type": docType,
+                "document_type": docType == employee.document_type ? null : docType,
                 "document_number": document
             }
             var info ={};

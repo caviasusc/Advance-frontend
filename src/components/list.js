@@ -68,7 +68,7 @@ function List(props) {
              <td>{emp.first_name}</td>
              <td>{emp.last_name}</td>
              <td>{emp.phone_number}</td>
-             <td><Button variant="outlined" color="primary" onClick={()=>{props.edit(emp); console.log(emp)}}>Editar</Button></td>
+             <td><Button variant="outlined" color="primary" onClick={()=>props.edit(emp)}>Editar</Button></td>
              <td><Button variant="outlined" color="primary" onClick={() => delEmp(emp.employee_id)}>x</Button></td>
            </tr>
          ))}
