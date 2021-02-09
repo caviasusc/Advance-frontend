@@ -7,54 +7,60 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import '../App.css';
+import axios from "axios"
 
 
 function UpdateEmployee(props) {
 
     const id = props.id
-    const { register, errors, handleSubmit, reset, setValue, getValues } = useForm({
-        mode: 'onChange',
-        defaultValues: {
-            firstname: '',
-            lastname: '',
-            email: '',
-            address: '',
-            phone_number: '',
-            doc: ''
-        },
-    });
+    const { register, errors, handleSubmit, reset, getValues } = useForm();
+
+    const [first_name, setFirstName] = useState();
+    const [last_name, setLastName] = useState();
     const [gender, setGender] = useState();
+    const [email, setEmail] = useState();
+    const [address, setAddress] = useState();
+    const [phone_number, setPhoneNumber] = useState();
     const [docType, setDocType] = useState();
-    const values = getValues();
-    const handleChange = (event) => {
-        setGender(event.target.value);
-    };
-    const handleChangeDoc = (event) => {
-        setDocType(event.target.value);
-    };
+    const [document, setDocument] = useState();
 
-    const onSubmit = async (data) => {
+    let values = getValues();
 
-        // console.log(values, gender, docType)
+    const onSubmit = () => {
+        try {
+            const pre_info = {
+                "first_name": first_name,
+                "last_name": last_name,
+                "gender": gender,
+                "email": email,
+                "phone_number": phone_number,
+                "address": address,
+                "document_type": docType,
+                "document_number": document
+            }
+            var info ={};
+            var x;
+            for (x in pre_info) {
+                if (pre_info[x]){
+                    info[x] = pre_info[x]
+                }
+            }
+            axios.put(`https://my-test-cv.herokuapp.com/employee/${id}`, info)
+                .then((response) => {
+                    window.alert(JSON.stringify(response.data.message));
+                })
+                .catch((error) => {
+                    window.alert(error);
+                });
 
-        var info;
-        for (const pr in values){
-            if (values[pr]=='') info[pr]=values.pr
+        } catch (error) {
+            console.log(error);
         }
-        var requestOptions = {
-            method: 'PUT',
-            headers: {"Content-Type": "application/json"},
-            body: info,
-            redirect: 'follow'
-        };
-
-        await fetch(`https://my-test-cv.herokuapp.com/employee/${id}`, requestOptions)
-            .then(response => response.text())
-            .then(result => console.log(result))
-            .catch(error => console.log('error', error));
-
         reset();
-    };
+        for (const x in values){
+            values[x]=null
+        }
+    }
 
     return (
         <div>
@@ -63,10 +69,9 @@ function UpdateEmployee(props) {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     label="Nombre"
-                    id="firstname"
-                    name="firstname"
-                    value={values.firstname}
-                    onChange={event => setValue('firstname', event.target.value, true)}
+                    id="first_name"
+                    name="first_name"
+                    onInput={event => { setFirstName(event.target.value) }}
                     inputRef={
                         register({
                             required: { value: false, message: 'Ingrese un nombre' },
@@ -76,9 +81,9 @@ function UpdateEmployee(props) {
                 <br />
                 <TextField
                     label="Apellido"
-                    id="lastname"
-                    name="lastname"
-                    onChange={event => setValue('lastname', event.target.value, true)}
+                    id="last_name"
+                    name="last_name"
+                    onChange={event => setLastName(event.target.value)}
                     inputRef={
                         register({
                             required: { value: false, message: 'Ingrese un nombre' },
@@ -91,14 +96,13 @@ function UpdateEmployee(props) {
                     <RadioGroup
                         aria-label="gender"
                         name="gender"
-                        value={values.gender}
-                        onChange={handleChange}
+                        onChange={event => setGender(event.target.value)}
                         inputRef={
                             register({
                                 required: { value: false, message: 'Ingrese un nombre' },
                             })
                         }
-                        >
+                    >
                         <FormControlLabel value="Mujer" control={<Radio />} label="Mujer" />
                         <FormControlLabel value="Hombre" control={<Radio />} label="Hombre" />
                         <FormControlLabel value="Otro" control={<Radio />} label="Otro" />
@@ -108,9 +112,9 @@ function UpdateEmployee(props) {
                 <TextField
                     label="Email"
                     placeholder="Email"
-                    id="email-TF"
+                    id="email"
                     name="email"
-                    onChange={event => setValue('email', event.target.value, true)}
+                    onChange={event => setEmail(event.target.value)}
                     inputRef={
                         register({
                             required: { value: false, message: 'Ingrese un nombre' },
@@ -125,9 +129,9 @@ function UpdateEmployee(props) {
                 <TextField
                     label="Dirección"
                     placeholder="Dirección"
-                    id="address"
                     name="address"
-                    onChange={event => setValue('address', event.target.value, true)}
+                    id="address"
+                    onChange={event => setAddress(event.target.value)}
                     inputRef={
                         register({
                             required: { value: false, message: 'Ingrese un nombre' },
@@ -137,23 +141,26 @@ function UpdateEmployee(props) {
                 <TextField
                     label="Teléfono"
                     placeholder="Teléfono"
-                    id="phone_number"
+                    id="phone-TF"
                     name="phone_number"
-                    onChange={event => setValue('phone_number', event.target.value, true)}
+                    onChange={event => setPhoneNumber(event.target.value)}
                     inputRef={
                         register({
                             required: { value: false, message: 'Ingrese un nombre' },
+                            pattern: {
+                                value: /^[0-9]/,
+                                message: "Ingrese un número"
+                            }
                         })
-                    } />
+                    }
+                /> <br /><span className="error">{errors?.phone_number?.message}</span>
                 <br />
                 <FormControl component="fieldset">
                     <FormLabel component="legend">Tipo de documento</FormLabel>
                     <RadioGroup
                         aria-label="docType"
                         name="docType"
-                        value={values.docType}
-                        onChange={handleChangeDoc}
-                        required
+                        onChange={event => setDocType(event.target.value)}
                         inputRef={
                             register({
                                 required: { value: false, message: 'Ingrese un nombre' },
@@ -168,9 +175,9 @@ function UpdateEmployee(props) {
                 <TextField
                     label="Documento"
                     placeholder="Documento"
-                    id="document"
-                    name="document"
-                    onChange={event => setValue('doc', event.target.value, true)}
+                    id="document_number"
+                    name="document_number"
+                    onChange={event => setDocument(event.target.value)}
                     inputRef={
                         register({
                             required: { value: false, message: 'Ingrese un nombre' },
@@ -180,9 +187,9 @@ function UpdateEmployee(props) {
                             }
                         })
                     }
-                />
+                /> <br /><span className="error">{errors?.document_number?.message}</span>
                 <br />
-                <input className="subButton" type="submit" ></input>
+                <input className="subButton" type="submit"></input>
             </form>
         </div >
     );

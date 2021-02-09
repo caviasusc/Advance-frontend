@@ -4,7 +4,6 @@ import List from './components/list';
 import Employee from './components/employee'
 import { Button, Paper } from '@material-ui/core';
 
-
 class App extends React.Component {
   state = {
     show: null,
@@ -15,6 +14,7 @@ class App extends React.Component {
     this.setState({show:'update'})
   }
 
+  
   render() {
     return (
       <div className="App">
