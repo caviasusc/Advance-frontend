@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Employee(props) {
     const show = props.show
-    const id = props.id
+    const emp = props.employee
     if (show) {
         if (show == 'create') {
             return (
@@ -29,7 +29,7 @@ function Employee(props) {
             )
         } else if (show == 'update') {
             return (
-                <UpdateEmployee id={id}/>
+                <UpdateEmployee employee={emp}/>
             )
         }
     } else {

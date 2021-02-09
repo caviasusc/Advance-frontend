@@ -62,6 +62,7 @@ function NewEmployee() {
                     name="first_name"
                     onInput={event=>{setFirstName(event.target.value)}}
                     required
+                    margin= "dense"
                     inputRef={
                         register({
                             required: { value: true, message: 'Ingrese un nombre' },
@@ -134,7 +135,7 @@ function NewEmployee() {
                 <TextField
                     label="Teléfono"
                     placeholder="Teléfono"
-                    id="phone-TF"
+                    id="phone_number"
                     name="phone_number"
                     required
                     onChange={event => setPhoneNumber(event.target.value)}
@@ -163,7 +164,7 @@ function NewEmployee() {
                         }
                     >
                         <FormControlLabel value="Cedula" control={<Radio />} label="Cedula" />
-                        <FormControlLabel value="Cedula de etranjeria" control={<Radio />} label="Cedula de etranjeria" />
+                        <FormControlLabel value="Cedula de etranjeria" control={<Radio />} label="Cedula de extranjeria" />
                         <FormControlLabel value="Otro" control={<Radio />} label="Otro" />
                     </RadioGroup>
                 </FormControl><br />

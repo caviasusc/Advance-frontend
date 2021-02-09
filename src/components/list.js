@@ -20,7 +20,6 @@ function List(props) {
       try {
         const requestat = 'https://my-test-cv.herokuapp.com/employee/all';
         const response = await (await fetch(requestat)).json()
-        console.log(response)
         setEmployeeList(response)
       } catch (error) {
         console.log(error)
@@ -69,7 +68,7 @@ function List(props) {
              <td>{emp.first_name}</td>
              <td>{emp.last_name}</td>
              <td>{emp.phone_number}</td>
-             <td><Button variant="outlined" color="primary" onClick={()=>props.edit(emp.employee_id)}>Editar</Button></td>
+             <td><Button variant="outlined" color="primary" onClick={()=>{props.edit(emp); console.log(emp)}}>Editar</Button></td>
              <td><Button variant="outlined" color="primary" onClick={() => delEmp(emp.employee_id)}>x</Button></td>
            </tr>
          ))}

@@ -12,16 +12,16 @@ import axios from "axios"
 
 function UpdateEmployee(props) {
 
-    const id = props.id
+    const employee = props.employee
     const { register, errors, handleSubmit, reset, getValues } = useForm();
 
     const [first_name, setFirstName] = useState();
     const [last_name, setLastName] = useState();
-    const [gender, setGender] = useState();
+    const [gender=employee.gender, setGender] = useState();
     const [email, setEmail] = useState();
     const [address, setAddress] = useState();
     const [phone_number, setPhoneNumber] = useState();
-    const [docType, setDocType] = useState();
+    const [docType=employee.document_type, setDocType] = useState();
     const [document, setDocument] = useState();
 
     let values = getValues();
@@ -45,21 +45,22 @@ function UpdateEmployee(props) {
                     info[x] = pre_info[x]
                 }
             }
-            axios.put(`https://my-test-cv.herokuapp.com/employee/${id}`, info)
+            axios.put(`https://my-test-cv.herokuapp.com/employee/${employee.employee_id}`, info)
                 .then((response) => {
                     window.alert(JSON.stringify(response.data.message));
                 })
                 .catch((error) => {
                     window.alert(error);
                 });
+            reset();
+            for (const x in values) {
+                values[x] = null
+            }
 
         } catch (error) {
             console.log(error);
         }
-        reset();
-        for (const x in values){
-            values[x]=null
-        }
+       
     }
 
     return (
@@ -69,6 +70,8 @@ function UpdateEmployee(props) {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     label="Nombre"
+                    InputLabelProps={{ shrink: true }}
+                    placeholder={employee.first_name}
                     id="first_name"
                     name="first_name"
                     onInput={event => { setFirstName(event.target.value) }}
@@ -81,6 +84,8 @@ function UpdateEmployee(props) {
                 <br />
                 <TextField
                     label="Apellido"
+                    InputLabelProps={{ shrink: true }}
+                    placeholder={employee.last_name}
                     id="last_name"
                     name="last_name"
                     onChange={event => setLastName(event.target.value)}
@@ -96,12 +101,8 @@ function UpdateEmployee(props) {
                     <RadioGroup
                         aria-label="gender"
                         name="gender"
-                        onChange={event => setGender(event.target.value)}
-                        inputRef={
-                            register({
-                                required: { value: false, message: 'Ingrese un nombre' },
-                            })
-                        }
+                        value={gender}
+                        onClick={event => {setGender(event.target.value)}}
                     >
                         <FormControlLabel value="Mujer" control={<Radio />} label="Mujer" />
                         <FormControlLabel value="Hombre" control={<Radio />} label="Hombre" />
@@ -111,7 +112,8 @@ function UpdateEmployee(props) {
                 <br />
                 <TextField
                     label="Email"
-                    placeholder="Email"
+                    InputLabelProps={{ shrink: true }}
+                    placeholder={employee.email}
                     id="email"
                     name="email"
                     onChange={event => setEmail(event.target.value)}
@@ -128,7 +130,8 @@ function UpdateEmployee(props) {
                 <br />
                 <TextField
                     label="Dirección"
-                    placeholder="Dirección"
+                    InputLabelProps={{ shrink: true }}
+                    placeholder={employee.address}
                     name="address"
                     id="address"
                     onChange={event => setAddress(event.target.value)}
@@ -140,7 +143,8 @@ function UpdateEmployee(props) {
                 /><br />
                 <TextField
                     label="Teléfono"
-                    placeholder="Teléfono"
+                    InputLabelProps={{ shrink: true }}
+                    placeholder={employee.phone_number.toString()}
                     id="phone-TF"
                     name="phone_number"
                     onChange={event => setPhoneNumber(event.target.value)}
@@ -160,21 +164,18 @@ function UpdateEmployee(props) {
                     <RadioGroup
                         aria-label="docType"
                         name="docType"
+                        value={docType}
                         onChange={event => setDocType(event.target.value)}
-                        inputRef={
-                            register({
-                                required: { value: false, message: 'Ingrese un nombre' },
-                            })
-                        }
                     >
                         <FormControlLabel value="Cedula" control={<Radio />} label="Cedula" />
-                        <FormControlLabel value="Cedula de etranjeria" control={<Radio />} label="Cedula de etranjeria" />
+                        <FormControlLabel value="Cedula de etranjeria" control={<Radio />} label="Cedula de extranjeria" />
                         <FormControlLabel value="Otro" control={<Radio />} label="Otro" />
                     </RadioGroup>
                 </FormControl><br />
                 <TextField
                     label="Documento"
-                    placeholder="Documento"
+                    InputLabelProps={{ shrink: true }}
+                    placeholder={employee.document_number.toString()}
                     id="document_number"
                     name="document_number"
                     onChange={event => setDocument(event.target.value)}

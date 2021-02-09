@@ -7,7 +7,7 @@ import { Button, Paper } from '@material-ui/core';
 class App extends React.Component {
   state = {
     show: null,
-    id:0,
+    employee: 0,
   }
 
   onEdit(){
@@ -25,14 +25,14 @@ class App extends React.Component {
         </header>
         <main>
           <Paper elevation={3} className="card list">
-          <List edit={(id) => this.setState({ show: 'update', id:id })}/>
+          <List edit={(emp) => this.setState({ show: 'update', employee:emp })}/>
           <br/>
           <div className="buttons">
             <Button className="newEmp" variant="outlined" color="primary" onClick={() => this.setState({show:'create'})}>Nuevo empleado</Button>
             </div>
             </Paper>
           <Paper elevation={3} className="card info">
-          <Employee show={this.state.show} id={this.state.id}/>
+          <Employee show={this.state.show} employee={this.state.employee}/>
         </Paper>
         </main>
       </div >
